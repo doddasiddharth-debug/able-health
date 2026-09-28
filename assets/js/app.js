@@ -589,6 +589,27 @@
       out.bedtime = fmt(bed);
       out.range = v.hours >= 8 && v.hours <= 10 ? "Yes, within 8–10 hours" : v.hours < 8 ? "Less than the 8–10 hours teens need" : "More than 10 hours";
     },
+    jobpay(v, out) {
+      const gross = v.wage * v.hours, net = gross - v.commuteCost, time = v.hours + v.commuteTime;
+      out.gross = money(gross);
+      out.net = money(net);
+      out.real = time ? `${money(net / time)} an hour` : "—";
+      if (!v.hours) return { warn: "Enter the hours you'd work each week." };
+    },
+    campaign(v, out) {
+      const pct = (a, b) => (b ? `${(Math.round((a / b) * 1000) / 10).toFixed(1)}%` : "—");
+      out.response = pct(v.responded, v.reached);
+      out.conversion = pct(v.bought, v.responded);
+      if (!v.bought) return { warn: "No new customers yet, so there's no cost per customer to work out." };
+      out.cost = money(v.spent / v.bought);
+    },
+    activity(v, out) {
+      const days = Math.min(7, Math.round(v.days)), week = days * v.minutes;
+      out.week = `${fixed(round(week, 1))} minutes`;
+      out.average = `${(Math.round((week / 7) * 10) / 10).toFixed(1)} minutes`;
+      out.meets = days === 7 && v.minutes >= 60 ? "Yes: 60+ minutes every day" : "Not yet: the goal is 60+ minutes every day";
+      out.short = `${fixed(round(Math.max(0, 420 - week), 1))} minutes`;
+    },
   });
 
   document.querySelectorAll(".lesson-tool[data-tool]").forEach((tool) => {
