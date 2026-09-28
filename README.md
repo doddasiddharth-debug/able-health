@@ -16,11 +16,12 @@ prep.ableinitiatives.com).
 | **Health Literacy: Taking Charge of Your Health**: trustworthy health information; navigating health care; using medicines safely; food labels and nutrition; sleep, stress and mental health; emergencies | `#hl`, `#hl-lesson-1`…`6`, `#hl-certificate` | `able.health.hl.v1` |
 | **Fitness & Nutrition: Fueling an Active Life**: food as fuel; building meals and snacks; hydration and drinks; how much activity you need; exercising safely; a healthy relationship with food, exercise and your body | `#fn`, `#fn-lesson-1`…`6`, `#fn-certificate` | `able.health.fn.v1` |
 | **Mental Health & Wellbeing**: what mental health is; emotions, stress and coping; knowing the signs; helping a friend; relationships and digital life; resilience and getting support | `#mh`, `#mh-lesson-1`…`6`, `#mh-certificate` | `able.health.mh.v1` |
+| **Careers in Health Care**: the world of health careers; physicians, PAs and nurse practitioners; nursing and allied health; public health and behind the scenes; getting started in high school; planning your path | `#hc`, `#hc-lesson-1`…`6`, `#hc-certificate` | `able.health.hc.v1` |
 
 Each course has a dashboard, six lessons (goals, worked example, common
 mistake, key idea, key terms, "try it yourself", a five-question quiz where
 four right completes the lesson) and its own certificate. Shared views: **All
-courses** (`#home`), **Calculators** (`#tools`: nutrition label, bedtime, activity check) and
+courses** (`#home`), **Calculators** (`#tools`: nutrition label, bedtime, activity check, training timeline) and
 **Glossary** (`#glossary`, built at runtime from every lesson's key terms).
 
 ## Files

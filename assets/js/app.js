@@ -610,6 +610,35 @@
       out.meets = days === 7 && v.minutes >= 60 ? "Yes: 60+ minutes every day" : "Not yet: the goal is 60+ minutes every day";
       out.short = `${fixed(round(Math.max(0, 420 - week), 1))} minutes`;
     },
+    speech(v, out) {
+      if (!v.rate) return { warn: "Enter your speaking rate in words per minute." };
+      const secs = Math.round((v.words / v.rate) * 60);
+      out.time = `${Math.floor(secs / 60)} min ${secs % 60} sec`;
+      out.fit = `${Math.round(v.limit * v.rate).toLocaleString("en-US")} words`;
+    },
+    pathway(v, out) {
+      const years = v.untilGrad + v.training;
+      out.age = `About ${fixed(round(v.age + years, 1))}`;
+      out.years = `${fixed(round(years, 1))} years`;
+    },
+    glide(v, out) {
+      if (!v.height || !v.distance) return { warn: "Enter the launch height and the distance it flew." };
+      out.ratio = `${(v.distance / v.height).toFixed(1)} : 1`;
+      out.angle = `${((Math.atan(v.height / v.distance) * 180) / Math.PI).toFixed(1)}°`;
+    },
+    lift(v, out) {
+      const L = 0.5 * v.density * v.speed * v.speed * v.area * v.cl;
+      out.lift = `${L.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} N`;
+      out.mass = `${(L / 9.81).toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} kg`;
+    },
+    rocket(v, out) {
+      if (!v.mass) return { warn: "Enter the rocket's mass at liftoff." };
+      const w = v.mass * 9.81, net = v.thrust - w;
+      out.weight = `${w.toFixed(1)} N`;
+      out.twr = (v.thrust / w).toFixed(2);
+      out.net = `${net.toFixed(1)} N`;
+      out.accel = net > 0 ? `${(net / v.mass).toFixed(2)} m/s²` : "Won't lift off: thrust isn't more than weight";
+    },
   });
 
   document.querySelectorAll(".lesson-tool[data-tool]").forEach((tool) => {
