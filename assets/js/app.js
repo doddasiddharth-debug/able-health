@@ -145,7 +145,9 @@
 
   // Drawn on a canvas so it can be saved as an image or printed as-is. The
   // name is only ever drawn as canvas text, never inserted as HTML.
-  const drawCert = async (c, name) => {
+  // `sample` draws the preview shown before a student finishes: "Your Name",
+  // no date, and a faint SAMPLE across it so it can't pass for the real thing.
+  const drawCert = async (c, name, sample = false) => {
     const W = 2000, H = 1414;
     const cv = document.createElement("canvas");
     cv.width = W; cv.height = H;
@@ -200,7 +202,7 @@
     center(`Awarded for passing all ${c.total === 6 ? "six" : c.total} lesson quizzes.`, 1118, `italic 400 26px ${SERIF}`, MUTED);
 
     // Footer: date left, ABLE seal centre, where right.
-    const date = new Date(c.state.completedAt || Date.now()).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    const date = sample ? "The day you finish" : new Date(c.state.completedAt || Date.now()).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
     const foot = (label, value, cx) => {
       x.textAlign = "center";
       x.fillStyle = INK; x.font = `600 32px ${SANS}`; x.fillText(value, cx, 1232);
@@ -214,7 +216,32 @@
       x.lineWidth = 3; x.strokeStyle = GREEN; x.stroke();
       const s = 120; x.drawImage(able, W / 2 - s / 2, 1230 - (s * able.height / able.width) / 2 - 10, s, s * able.height / able.width); // lifted: the A looks low when box-centred
     }
+    if (sample) {
+      x.save();
+      x.translate(W / 2, H / 2);
+      x.rotate(-0.32);
+      x.font = `800 300px ${SANS}`;
+      x.textAlign = "center";
+      x.textBaseline = "middle";
+      x.fillStyle = "rgba(20, 20, 58, 0.07)";
+      x.fillText("SAMPLE", 0, 0);
+      x.restore();
+    }
     return cv;
+  };
+
+  // The sample certificate on each course's certificate view, drawn the
+  // first time that view opens (a canvas this size isn't free to draw).
+  const samples = {};
+  const showSample = async (c) => {
+    const fig = c.cert && $("[data-cert-sample]", c.cert);
+    if (!fig || samples[c.id]) return;
+    samples[c.id] = true;
+    const cv = await drawCert(c, "Your Name", true);
+    const img = $("img", fig);
+    img.src = cv.toDataURL("image/png");
+    img.alt = `Sample certificate for ${c.title}: your name and the date you finish go on yours`;
+    fig.hidden = false;
   };
 
   courses.forEach((c) => {
@@ -224,7 +251,11 @@
     const preview = $("[data-cert-preview]", cert), img = $("[data-cert-img]", cert);
     const actions = $("[data-cert-actions]", cert), dl = $("[data-cert-download]", cert);
     c.certURL = null;
-    c.resetCert = () => { preview.hidden = true; actions.hidden = true; nameIn.value = ""; };
+    c.resetCert = () => {
+      preview.hidden = true; actions.hidden = true; nameIn.value = "";
+      const sample = $("[data-cert-sample]", cert);
+      if (sample && samples[c.id]) sample.hidden = false;
+    };
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const name = nameIn.value.replace(/\s+/g, " ").trim().slice(0, 60);
@@ -241,6 +272,8 @@
       dl.download = `ABLE-${c.file}-certificate-${name.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "") || "student"}.png`;
       preview.hidden = false;
       actions.hidden = false;
+      const sample = $("[data-cert-sample]", cert);
+      if (sample) sample.hidden = true;
       preview.scrollIntoView({ block: "nearest", behavior: "smooth" });
       track(`certificate/${c.id}`);
     });
@@ -306,6 +339,8 @@
     const course = view.dataset.course || "";
     $$("[data-course-nav]").forEach((g) => g.classList.toggle("is-open", g.dataset.courseNav === course));
     document.title = `${view.dataset.title} · ${SITE.name}`;
+    const certCourse = view.id.endsWith("-certificate") && byId[view.dataset.course];
+    if (certCourse) showSample(certCourse);
     setMenu(false);
     if (target && target !== view && !(view.id === "tools" && window.innerWidth > 1100)) target.scrollIntoView({ block: "start" });
     else window.scrollTo({ top: 0, behavior: "instant" });

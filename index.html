@@ -16,7 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,500;9..40,600;9..40,700;9..40,800&family=Libre+Baskerville:ital@1&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/health.css?v=1">
+<link rel="stylesheet" href="assets/css/health.css?v=2">
 <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
@@ -109,7 +109,7 @@
             <div class="stat"><span class="stat-num" data-stat-lessons>0/6</span><span class="stat-label">lessons passed</span></div>
             <div class="stat"><span class="stat-num" data-stat-right>0/30</span><span class="stat-label">quiz questions right</span></div>
             <div class="stat"><span class="stat-num" data-stat-cert>Locked</span><span class="stat-label">certificate</span></div>
-            <p class="fine">About 93 minutes in all. Pass a lesson's quiz (4 of 5) to complete it. Progress is saved in this browser only.</p>
+            <p class="fine">About 93 minutes in all. Pass a lesson's quiz (4 of 5) to complete it. Progress is saved in this browser only. <a class="btn-text" href="#hl-certificate">Preview the certificate →</a></p>
           </section>
           <section class="card card-lessons">
             <h2>Lessons</h2>
@@ -1272,6 +1272,12 @@
               <button type="button" class="btn btn-outline" data-cert-print>Print or save as PDF</button>
             </div>
           </div>
+          <!-- A sample of this course's certificate, drawn by app.js the first
+               time this view opens; hidden once the student makes theirs. -->
+          <figure class="cert-sample" data-cert-sample hidden>
+            <img src="data:," alt="">
+            <figcaption>A sample of this course's certificate. Yours carries your name and the date you finish.</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -1384,7 +1390,7 @@
  }
 }
 </script>
-<script src="assets/js/app.js?v=1"></script>
-<script src="assets/js/analytics.js?v=1" data-spa defer></script>
+<script src="assets/js/app.js?v=2"></script>
+<script src="assets/js/analytics.js?v=2" data-spa defer></script>
 </body>
 </html>

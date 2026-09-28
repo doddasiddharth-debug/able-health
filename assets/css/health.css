@@ -462,3 +462,7 @@ img { max-width: 100%; display: block; }
    (a code snippet in an answer) could push a quiz wider than a phone. */
 .quiz-q { min-width: 0; }
 .lesson code { overflow-wrap: anywhere; }
+/* The sample certificate on each course's certificate view. */
+.cert-sample { margin: 22px 0 0; }
+.cert-sample img { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--line); box-shadow: var(--shadow-md); }
+.cert-sample figcaption { margin-top: 10px; font-size: 13.5px; color: var(--muted); text-align: center; }
