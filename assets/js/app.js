@@ -641,6 +641,24 @@
     },
   });
 
+  // Video slots: a button until pressed, so nothing is fetched from YouTube
+  // (and no cookies are set) unless the student chooses to watch.
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest(".lesson-video-play");
+    if (!b) return;
+    const fig = b.closest("[data-yt]");
+    const id = fig.dataset.yt;
+    if (!/^[\w-]{6,20}$/.test(id)) return;
+    const frame = document.createElement("iframe");
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    frame.title = fig.dataset.ytTitle || "Video";
+    frame.allow = "autoplay; encrypted-media; picture-in-picture";
+    frame.allowFullscreen = true;
+    frame.className = "lesson-video-frame";
+    b.replaceWith(frame);
+    track(`video/${id}`, true);
+  });
+
   document.querySelectorAll(".lesson-tool[data-tool]").forEach((tool) => {
     const fn = TOOLS[tool.dataset.tool];
     if (!fn) return;

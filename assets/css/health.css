@@ -466,3 +466,42 @@ img { max-width: 100%; display: block; }
 .cert-sample { margin: 22px 0 0; }
 .cert-sample img { display: block; width: 100%; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--line); box-shadow: var(--shadow-md); }
 .cert-sample figcaption { margin-top: 10px; font-size: 13.5px; color: var(--muted); text-align: center; }
+
+/* ---------- lesson diagrams (inline SVG) ----------
+   Drawn with classes, not colours, so each course site's own palette shows
+   through: fills fg-accent / fg-tint / fg-gold / fg-ink / fg-muted / fg-paper
+   / fg-bg, strokes fg-accent-s / fg-gold-s / fg-ink-s / fg-line. fg-flow
+   and fg-pulse are the only motion, and reduced motion switches both off. */
+.lesson-figure { margin: 26px 0; padding: 18px 18px 14px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.lesson-figure svg { display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto; overflow: visible; }
+.lesson-figure text { font-family: var(--font-body, "Inter", sans-serif); fill: var(--ink); }
+.lesson-figure figcaption { font-size: 14px; line-height: 1.5; color: var(--muted); margin-top: 12px; text-align: center; }
+.lesson-figure .fg-accent { fill: var(--accent); }
+.lesson-figure .fg-tint { fill: var(--accent-tint); }
+.lesson-figure .fg-gold { fill: var(--gold); }
+.lesson-figure .fg-ink { fill: var(--ink); }
+.lesson-figure .fg-muted { fill: var(--muted); }
+.lesson-figure .fg-paper { fill: var(--paper); }
+.lesson-figure .fg-bg { fill: var(--bg-alt); }
+.lesson-figure .fg-accent-s { stroke: var(--accent); }
+.lesson-figure .fg-gold-s { stroke: var(--gold-deep); }
+.lesson-figure .fg-ink-s { stroke: var(--ink); }
+.lesson-figure .fg-line { stroke: var(--line-strong); }
+.lesson-figure .fg-flow { stroke-dasharray: 7 9; animation: fg-flow 1.6s linear infinite; }
+.lesson-figure .fg-pulse { transform-box: fill-box; transform-origin: center; animation: fg-pulse 2.4s ease-in-out infinite; }
+@keyframes fg-flow { to { stroke-dashoffset: -32; } }
+@keyframes fg-pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.08); opacity: 0.85; } }
+@media (prefers-reduced-motion: reduce) { .lesson-figure .fg-flow, .lesson-figure .fg-pulse { animation: none; } }
+
+/* ---------- lesson videos ----------
+   A button until pressed; app.js then swaps in a youtube-nocookie iframe. */
+.lesson-videos { display: grid; gap: 12px; margin: 22px 0 6px; }
+.lesson-video { margin: 0; }
+.lesson-video-play { width: 100%; display: flex; align-items: center; gap: 16px; padding: 16px 18px; text-align: left; font: inherit; color: var(--ink); background: var(--accent-tint); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; }
+.lesson-video-play:hover { border-color: var(--accent); }
+.lesson-video-icon { flex: none; width: 46px; height: 46px; border-radius: 50%; background: var(--accent); position: relative; }
+.lesson-video-icon::after { content: ""; position: absolute; left: 18px; top: 14px; border-left: 14px solid #FFFFFF; border-top: 9px solid transparent; border-bottom: 9px solid transparent; }
+.lesson-video-text { display: grid; gap: 2px; }
+.lesson-video-text span { font-size: 13.5px; color: var(--muted); }
+.lesson-video-frame { display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: var(--radius-md); background: #000; }
+.lesson-video figcaption { font-size: 13.5px; color: var(--muted); margin-top: 8px; }
